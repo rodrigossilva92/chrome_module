@@ -98,6 +98,8 @@ class ChromedriverManager:
             path_dir_chromedriver = os.path.dirname(path_chromedriver)
         else:
             path_dir_chromedriver = path_chromedriver
+            if not os.path.exists(path_dir_chromedriver):
+                os.makedirs(path_dir_chromedriver, exist_ok=True)
             for file in os.listdir(path_dir_chromedriver):
                 path_file = os.path.join(path_dir_chromedriver, file)
                 if os.path.isfile(path_file) and cls.CHROMEDRIVER_NAME_MAPPING[OSUtils.get_os_type()] == file:

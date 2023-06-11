@@ -20,6 +20,7 @@ class Chromedriver:
 
     def __init__(self, path_chromedriver:str=None, headless:bool=False, kill_chrome:bool=True, download:bool=False, path_downloads:str=None, chrome_arguments:list=None):
         self.path_chromedriver = os.path.abspath(path_chromedriver) if path_chromedriver is not None else path_chromedriver
+        print(self.path_chromedriver)
         self.headless = headless
         self.download = download
         self.path_downloads = os.path.abspath(path_downloads) if path_downloads is not None else OSUtils.get_root_directory_path()

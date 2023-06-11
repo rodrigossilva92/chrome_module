@@ -1,7 +1,7 @@
 
 from src.chromedriver import Chromedriver
 
-chrome = Chromedriver(path_chromedriver='chromedriver')
+chrome = Chromedriver()
 input("hold")
  
 
