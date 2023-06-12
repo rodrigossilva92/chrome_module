@@ -6,8 +6,6 @@ import xml.etree.ElementTree as ET
 from .os_utils import OSUtils
 
 class ChromedriverManager:
-    CHROME_VERSION_PATTERN = r"Google Chrome\s+(\d+\.\d+\.\d+\.\d+)"
-    CHROMEDRIVER_VERSION_PATTERN = r"ChromeDriver\s+(\d+\.\d+\.\d+\.\d+)"
     VERSION_PATTERN = r"\d+\.\d+\.\d+\.\d+"
     CHROMEDRIVER_NAME_MAPPING = {
         "linux": "chromedriver",
@@ -24,11 +22,8 @@ class ChromedriverManager:
         cmd_version = cmd_chrome_version_map[OSUtils.get_os_type()]
         cmd_return = OSUtils.send_terminal_command(cmd_version)
         print(cmd_return)
-        chrome_version = re.search(cls.CHROME_VERSION_PATTERN,
-                                   cmd_return,
-                                   re.I).group(0)
         version = re.search(cls.VERSION_PATTERN,
-                            chrome_version).group(0)
+                            cmd_return).group(0)
         return version
     
     @classmethod
@@ -37,11 +32,8 @@ class ChromedriverManager:
         cmd = f"{abs_path} --version"
         cmd_return = OSUtils.send_terminal_command(cmd)
         print(cmd_return)
-        chromedriver_version = re.search(cls.CHROMEDRIVER_VERSION_PATTERN,
-                                         cmd_return,
-                                         re.I).group(0)
         version = re.search(cls.VERSION_PATTERN, 
-                            chromedriver_version).group(0)
+                            cmd_return).group(0)
         return version
     
     @classmethod
