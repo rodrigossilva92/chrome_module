@@ -22,6 +22,7 @@ class Chromedriver:
         self.path_chromedriver = os.path.abspath(path_chromedriver) if path_chromedriver is not None else path_chromedriver
         print(self.path_chromedriver)
         self.headless = headless
+        self.kill_chrome = kill_chrome
         self.download = download
         self.path_downloads = os.path.abspath(path_downloads) if path_downloads is not None else OSUtils.get_root_directory_path()
         self.chrome_arguments = list() if chrome_arguments is None else chrome_arguments
@@ -29,7 +30,8 @@ class Chromedriver:
         self.start_driver()                
 
     def __del__(self):
-        Chromedriver.kill_chrome_children()
+        if self.kill_chrome:
+            Chromedriver.kill_chrome_children()
         self.driver.quit()              
     
     @staticmethod
