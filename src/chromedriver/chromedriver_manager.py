@@ -6,6 +6,9 @@ import xml.etree.ElementTree as ET
 from .os_utils import OSUtils
 
 class ChromedriverManager:
+    """
+    Class to help to manage problems with chromedriver missing form project or versions conflicts
+    """
     VERSION_PATTERN = r"\d+\.\d+\.\d+\.\d+"
     CHROMEDRIVER_NAME_MAPPING = {
         "linux": "chromedriver",
@@ -14,6 +17,9 @@ class ChromedriverManager:
 
     @classmethod
     def get_chrome_version(cls) -> str:
+        """
+        Returns the chrome browser version
+        """
         cmd_chrome_version_map = {
             OSUtils.LINUX: r"google-chrome --version",
             OSUtils.WINDOWS: ['powershell', '-command', '$(Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\\Software\\Google\\chrome\\BLBeacon).version'],
@@ -28,6 +34,9 @@ class ChromedriverManager:
     
     @classmethod
     def get_chromedriver_version(cls, path_chromedriver:str) -> str:
+        """
+        Returns the chromedriver version
+        """
         abs_path = os.path.abspath(path_chromedriver)
         cmd = f"{abs_path} --version"
         cmd_return = OSUtils.send_terminal_command(cmd)
@@ -38,11 +47,17 @@ class ChromedriverManager:
     
     @classmethod
     def get_major_version(cls, version:str) -> str:
+        """
+        Returns the major version from a given version string
+        """
         major_version = version.split('.')[0]
         return major_version
 
     @classmethod
     def check_versions_compatibilty(cls, path_chromedriver:str) -> bool:
+        """
+        Verifies if chrome browser and chromedriver have the same major version
+        """
         try:
             major_version_chrome = cls.get_major_version(cls.get_chrome_version())
             major_version_chromedriver = cls.get_major_version(cls.get_chromedriver_version(path_chromedriver))
@@ -52,6 +67,9 @@ class ChromedriverManager:
     
     @classmethod
     def download_chromedriver(cls, path_save_chromedriver:str) -> str:
+        """
+        Downloads the the right version and system chromedriver and returns the path where it was extracted
+        """
         os.makedirs(path_save_chromedriver, exist_ok=True)
         os_url_mapping = {
             "linux": "linux64",
@@ -69,6 +87,9 @@ class ChromedriverManager:
 
     @classmethod
     def get_download_compatible_version(cls) -> str:
+        """
+        Returns the specific chromedriver version available on the chromedriver website relative with the chrome browser version
+        """
         chrome_major_version = cls.get_major_version(cls.get_chrome_version())
         response = urllib.request.urlopen("https://chromedriver.storage.googleapis.com").read()
         tree = ET.fromstring(response)
@@ -79,6 +100,9 @@ class ChromedriverManager:
     
     @classmethod
     def manage_chromedriver(cls, path_chromedriver:str) -> str:
+        """
+        Handles the chromedriver managment and returns the path of the chromedriver to be used
+        """
         if path_chromedriver is None:
             path_chromedriver = OSUtils.get_root_directory_path()
         path_chromedriver = os.path.abspath(path_chromedriver)

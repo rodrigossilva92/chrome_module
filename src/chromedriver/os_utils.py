@@ -136,7 +136,9 @@ class OSUtils:
         Returns the project root directory
         """
         path_file = sys.modules['__main__'].__file__
+        print(path_file)
         path_dir = os.path.dirname(path_file)
+        print(path_dir)
         return path_dir
     
     @staticmethod
